@@ -84,16 +84,18 @@
     </div>
     <div class="row">
       <label>Flight Time (HH:MM)</label>
-      <div class="hhmm-z">
+      <div class="hhmm">
         <input type="text" id="flightH" placeholder="HH" maxlength="2" inputmode="numeric" pattern="^([01]?[0-9]|2[0-3])$" oninput="enforceFormat(this,'hour')">
         <span>:</span>
         <input type="text" id="flightM" placeholder="MM" maxlength="2" inputmode="numeric" pattern="^[0-5][0-9]$" oninput="enforceFormat(this,'minute')">
-        <span>Z</span>
       </div>
     </div>
     <div class="row">
       <label for="walkTime">You Can Walk At</label>
-      <input type="text" id="walkTime" readonly>
+      <div class="hhmm-z">
+        <input type="text" id="walkTime" readonly>
+        <span>Z</span>
+      </div>
     </div>
   </div>
 </body>
