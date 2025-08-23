@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FRMS Time Out</title>
+  <title>FRMS Optional Time Out</title>
   <script>
     function calculateWalkTime() {
       function parseTime(hourStr, minStr) {
@@ -42,16 +42,24 @@
 
       if (!regex.test(input.value)) {
         input.setCustomValidity(type === "minutes" ? "Please enter minutes only" : "Please enter a valid number");
+        input.style.borderColor = 'red';
       } else {
         input.setCustomValidity("");
+        input.style.borderColor = '#ccc';
       }
       if(type!=='minutes') calculateWalkTime();
 
-      // Auto-advance for HH/MM fields
+      // Auto-advance for HH/MM fields and to next row
       if(type === 'hour' && input.value.length === 2) {
         const next = input.nextElementSibling.nextElementSibling;
         if(next && next.tagName === 'INPUT') next.focus();
+      } else if(type === 'minute' && input.value.length === 2) {
+        const row = input.closest('.row');
+        const nextRowInput = row.nextElementSibling.querySelector('input');
+        if(nextRowInput) nextRowInput.focus();
       }
+
+      if(input.value.length > 2) input.value = input.value.slice(0,2);
     }
   </script>
   <style>
@@ -76,8 +84,8 @@
   </style>
 </head>
 <body>
-  <h1>FRMS Time Out</h1>
-  <h3>All Times Zulu</h3>
+  <h1>FRMS Optional Time Out</h1>
+  <h3>Enter All Times in Zulu</h3>
   <h3>See PWA 12.D.1. Exception two for details.</h3>
 
   <div class="container">
@@ -92,7 +100,7 @@
     </div>
     <div class="row">
       <label for="taxi">Taxi Time (MM)</label>
-      <input type="text" id="taxi" placeholder="MM" pattern="^\d+$" inputmode="numeric" oninput="enforceFormat(this,'minutes')">
+      <input type="text" id="taxi" placeholder="MM" maxlength="3" inputmode="numeric" pattern="^\d+$" oninput="enforceFormat(this,'minutes')">
     </div>
     <div class="row">
       <label>Flight Time (HH:MM)</label>
