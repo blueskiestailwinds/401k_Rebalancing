@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FRMS Time Out</title>
+  <script>
+    function calculateWalkTime() {
+      function parseTime(str) {
+        const [h, m] = str.split(":").map(Number);
+        return h * 60 + m;
+      }
+      function formatTime(minutes) {
+        minutes = (minutes + 24*60) % (24*60); // wrap around 24h
+        const h = Math.floor(minutes / 60);
+        const m = minutes % 60;
+        return String(h).padStart(2, '0') + ":" + String(m).padStart(2, '0');
+      }
+
+      const blockIn = document.getElementById("blockIn").value;
+      const taxi = document.getElementById("taxi").value;
+      const flight = document.getElementById("flight").value;
+
+      if (blockIn && taxi && flight) {
+        const blockInMinutes = parseTime(blockIn);
+        const taxiMinutes = parseInt(taxi, 10);
+        const flightMinutes = parseTime(flight);
+
+        let walkTime = blockInMinutes + 120 - taxiMinutes - flightMinutes;
+        document.getElementById("walkTime").value = formatTime(walkTime);
+      }
+    }
+
+    function enforceFormat(input, type) {
+      let regex;
+      if (type === "time") {
+        regex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
+      } else if (type === "minutes") {
+        regex = /^\d+$/;
+      }
+
+      if (!regex.test(input.value)) {
+        input.setCustomValidity(type === "time" ? "Please enter time in HH:MM 24-hour format" : "Please enter minutes only");
+      } else {
+        input.setCustomValidity("");
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f9f9f9;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 0;
+    }
+    h3 {
+      text-align: center;
+      margin-top: 5px;
+      color: #666;
+    }
+    .container {
+      max-width: 500px;
+      margin: 20px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      margin: 10px 0;
+    }
+    label {
+      padding-right: 10px;
+    }
+    input {
+      padding: 6px;
+      width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      text-align: center;
+    }
+    input[readonly] {
+      background-color: #eee;
+    }
+  </style>
+</head>
+<body>
+  <h1>FRMS Time Out</h1>
+  <h3>All Times Zulu</h3>
+
+  <div class="container">
+    <div class="row">
+      <label for="report">Scheduled Report (HH:MM)</label>
+      <input type="text" id="report" placeholder="HH:MM" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" oninput="enforceFormat(this, 'time')">
+    </div>
+    <div class="row">
+      <label for="blockIn">Scheduled Block-In (HH:MM)</label>
+      <input type="text" id="blockIn" placeholder="HH:MM" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" oninput="enforceFormat(this, 'time')" onchange="calculateWalkTime()">
+    </div>
+    <div class="row">
+      <label for="taxi">Taxi Time (MM)</label>
+      <input type="text" id="taxi" placeholder="MM" pattern="^\d+$" oninput="enforceFormat(this, 'minutes')" onchange="calculateWalkTime()">
+    </div>
+    <div class="row">
+      <label for="flight">Flight Time (HH:MM)</label>
+      <input type="text" id="flight" placeholder="HH:MM" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" oninput="enforceFormat(this, 'time')" onchange="calculateWalkTime()">
+    </div>
+    <div class="row">
+      <label for="walkTime">You Can Walk Time</label>
+      <input type="text" id="walkTime" readonly>
+    </div>
+  </div>
+</body>
+</html>
