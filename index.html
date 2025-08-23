@@ -6,88 +6,59 @@
   <title>FRMS Time Out</title>
   <script>
     function calculateWalkTime() {
-      function parseTime(str) {
-        const [h, m] = str.split(":").map(Number);
+      function parseTime(hourStr, minStr) {
+        const h = parseInt(hourStr, 10);
+        const m = parseInt(minStr, 10);
         return h * 60 + m;
       }
       function formatTime(minutes) {
-        minutes = (minutes + 24*60) % (24*60); // wrap around 24h
+        minutes = (minutes + 24*60) % (24*60);
         const h = Math.floor(minutes / 60);
         const m = minutes % 60;
         return String(h).padStart(2, '0') + ":" + String(m).padStart(2, '0');
       }
 
-      const blockIn = document.getElementById("blockIn").value;
+      const blockInH = document.getElementById("blockInH").value;
+      const blockInM = document.getElementById("blockInM").value;
       const taxi = document.getElementById("taxi").value;
-      const flight = document.getElementById("flight").value;
+      const flightH = document.getElementById("flightH").value;
+      const flightM = document.getElementById("flightM").value;
 
-      if (blockIn && taxi && flight) {
-        const blockInMinutes = parseTime(blockIn);
+      if (blockInH && blockInM && taxi && flightH && flightM) {
+        const blockInMinutes = parseTime(blockInH, blockInM);
         const taxiMinutes = parseInt(taxi, 10);
-        const flightMinutes = parseTime(flight);
+        const flightMinutes = parseTime(flightH, flightM);
 
-        let walkTime = blockInMinutes + 120 - taxiMinutes - flightMinutes;
+        const walkTime = blockInMinutes + 120 - taxiMinutes - flightMinutes;
         document.getElementById("walkTime").value = formatTime(walkTime);
       }
     }
 
     function enforceFormat(input, type) {
       let regex;
-      if (type === "time") {
-        regex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
-      } else if (type === "minutes") {
-        regex = /^\d+$/;
-      }
+      if (type === "hour") regex = /^([01]?[0-9]|2[0-3])$/;
+      else if (type === "minute") regex = /^[0-5][0-9]$/;
+      else if (type === "minutes") regex = /^\d+$/;
 
       if (!regex.test(input.value)) {
-        input.setCustomValidity(type === "time" ? "Please enter time in HH:MM 24-hour format" : "Please enter minutes only");
+        input.setCustomValidity(type === "minutes" ? "Please enter minutes only" : "Please enter a valid number");
       } else {
         input.setCustomValidity("");
       }
+      if(type!=='minutes') calculateWalkTime();
     }
   </script>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-      background-color: #f9f9f9;
-    }
-    h1 {
-      text-align: center;
-      margin-bottom: 0;
-    }
-    h3 {
-      text-align: center;
-      margin-top: 5px;
-      color: #666;
-    }
-    .container {
-      max-width: 500px;
-      margin: 20px auto;
-      background: #fff;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-    .row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
-      margin: 10px 0;
-    }
-    label {
-      padding-right: 10px;
-    }
-    input {
-      padding: 6px;
-      width: 100%;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      text-align: center;
-    }
-    input[readonly] {
-      background-color: #eee;
-    }
+    body { font-family: Arial, sans-serif; margin: 20px; background-color: #f9f9f9; }
+    h1 { text-align: center; margin-bottom: 0; }
+    h3 { text-align: center; margin-top: 5px; color: #666; }
+    .container { max-width: 500px; margin: 20px auto; background: #fff; padding: 20px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    .row { display: grid; grid-template-columns: 1fr 1fr; align-items: center; margin: 10px 0; }
+    label { padding-right: 10px; }
+    input { padding: 6px; width: 100%; border: 1px solid #ccc; border-radius: 6px; text-align: center; }
+    input[readonly] { background-color: #eee; }
+    .hhmm { display: flex; gap: 4px; align-items: center; }
+    .hhmm input { width: 45%; }
   </style>
 </head>
 <body>
@@ -97,16 +68,24 @@
 
   <div class="container">
     <div class="row">
-      <label for="blockIn">Scheduled Block-In (HH:MM)</label>
-      <input type="text" id="blockIn" placeholder="HH:MM" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" oninput="enforceFormat(this, 'time')" onchange="calculateWalkTime()">
+      <label>Scheduled Block-In (HH:MM)</label>
+      <div class="hhmm">
+        <input type="text" id="blockInH" placeholder="HH" maxlength="2" inputmode="numeric" pattern="^([01]?[0-9]|2[0-3])$" oninput="enforceFormat(this,'hour')">
+        <span>:</span>
+        <input type="text" id="blockInM" placeholder="MM" maxlength="2" inputmode="numeric" pattern="^[0-5][0-9]$" oninput="enforceFormat(this,'minute')">
+      </div>
     </div>
     <div class="row">
       <label for="taxi">Taxi Time (MM)</label>
-      <input type="text" id="taxi" placeholder="MM" pattern="^\d+$" inputmode="numeric" oninput="enforceFormat(this, 'minutes')" onchange="calculateWalkTime()">
+      <input type="text" id="taxi" placeholder="MM" pattern="^\d+$" inputmode="numeric" oninput="enforceFormat(this,'minutes')">
     </div>
     <div class="row">
-      <label for="flight">Flight Time (HH:MM)</label>
-      <input type="text" id="flight" placeholder="HH:MM" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" oninput="enforceFormat(this, 'time')" onchange="calculateWalkTime()">
+      <label>Flight Time (HH:MM)</label>
+      <div class="hhmm">
+        <input type="text" id="flightH" placeholder="HH" maxlength="2" inputmode="numeric" pattern="^([01]?[0-9]|2[0-3])$" oninput="enforceFormat(this,'hour')">
+        <span>:</span>
+        <input type="text" id="flightM" placeholder="MM" maxlength="2" inputmode="numeric" pattern="^[0-5][0-9]$" oninput="enforceFormat(this,'minute')">
+      </div>
     </div>
     <div class="row">
       <label for="walkTime">You Can Walk At</label>
