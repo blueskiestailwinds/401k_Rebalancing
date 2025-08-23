@@ -97,10 +97,6 @@
 
   <div class="container">
     <div class="row">
-      <label for="report">Scheduled Report (HH:MM)</label>
-      <input type="text" id="report" placeholder="HH:MM" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" oninput="enforceFormat(this, 'time')">
-    </div>
-    <div class="row">
       <label for="blockIn">Scheduled Block-In (HH:MM)</label>
       <input type="text" id="blockIn" placeholder="HH:MM" pattern="^([01]?[0-9]|2[0-3]):[0-5][0-9]$" oninput="enforceFormat(this, 'time')" onchange="calculateWalkTime()">
     </div>
