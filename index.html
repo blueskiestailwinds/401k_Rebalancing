@@ -59,6 +59,8 @@
     input[readonly] { background-color: #eee; }
     .hhmm { display: flex; gap: 4px; align-items: center; }
     .hhmm input { width: 45%; }
+    .hhmm-z { display: flex; gap: 4px; align-items: center; justify-content: flex-end; }
+    .hhmm-z span { margin-left: 4px; }
   </style>
 </head>
 <body>
@@ -69,10 +71,11 @@
   <div class="container">
     <div class="row">
       <label>Scheduled Block-In (HH:MM)</label>
-      <div class="hhmm">
+      <div class="hhmm-z">
         <input type="text" id="blockInH" placeholder="HH" maxlength="2" inputmode="numeric" pattern="^([01]?[0-9]|2[0-3])$" oninput="enforceFormat(this,'hour')">
         <span>:</span>
         <input type="text" id="blockInM" placeholder="MM" maxlength="2" inputmode="numeric" pattern="^[0-5][0-9]$" oninput="enforceFormat(this,'minute')">
+        <span>Z</span>
       </div>
     </div>
     <div class="row">
@@ -81,10 +84,11 @@
     </div>
     <div class="row">
       <label>Flight Time (HH:MM)</label>
-      <div class="hhmm">
+      <div class="hhmm-z">
         <input type="text" id="flightH" placeholder="HH" maxlength="2" inputmode="numeric" pattern="^([01]?[0-9]|2[0-3])$" oninput="enforceFormat(this,'hour')">
         <span>:</span>
         <input type="text" id="flightM" placeholder="MM" maxlength="2" inputmode="numeric" pattern="^[0-5][0-9]$" oninput="enforceFormat(this,'minute')">
+        <span>Z</span>
       </div>
     </div>
     <div class="row">
