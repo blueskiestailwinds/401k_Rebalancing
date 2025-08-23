@@ -102,7 +102,7 @@
     </div>
     <div class="row">
       <label for="taxi">Taxi Time (MM)</label>
-      <input type="text" id="taxi" placeholder="MM" pattern="^\d+$" oninput="enforceFormat(this, 'minutes')" onchange="calculateWalkTime()">
+      <input type="text" id="taxi" placeholder="MM" pattern="^\d+$" inputmode="numeric" oninput="enforceFormat(this, 'minutes')" onchange="calculateWalkTime()">
     </div>
     <div class="row">
       <label for="flight">Flight Time (HH:MM)</label>
