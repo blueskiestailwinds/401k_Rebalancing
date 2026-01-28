@@ -193,16 +193,17 @@ function validatePercentages() {
   const errorMsg = document.getElementById('errorMessage');
   const calculateBtn = document.getElementById('calculateBtn');
 
-  if(sumPct > 100 || sumPct < 0) {
+  if (sumPct !== 100) {
     table.classList.add('error');
-    errorMsg.textContent = `⚠ Whole-portfolio percentages sum to ${sumPct}%. They must be between 0% and 100%.`;
+    errorMsg.textContent = `⚠ Whole-portfolio percentages sum to ${sumPct}%. They must sum to exactly 100%.`;
     calculateBtn.disabled = true;
   } else {
     table.classList.remove('error');
-    errorMsg.textContent = '';
+    errorMsg.textContent = "";
     calculateBtn.disabled = false;
   }
 }
+
 
 // Calculate Group 1 percentages and dollars
 function calculateGroup1() {
