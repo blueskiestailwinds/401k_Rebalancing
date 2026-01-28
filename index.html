@@ -215,6 +215,13 @@ function calculateGroup1() {
 
   const foreignDollarVal = total * foreignPct / 100;
   const bondDollarVal = total * bondPct / 100;
+
+  // NEW CHECK: ensure Group 1 is large enough
+  if (foreignDollarVal + bondDollarVal > group1) {
+    alert("Cannot rebalance entirely within Group 1");
+    return; // stop calculation
+  }
+
   const remaining = group1 - (foreignDollarVal + bondDollarVal);
 
   const totalLargeSmall = largePct + smallPct;
@@ -237,6 +244,7 @@ function calculateGroup1() {
   document.getElementById('foreignDollar').innerText = Math.round(foreignDollarVal).toLocaleString('en-US');
   document.getElementById('bondDollar').innerText = Math.round(bondDollarVal).toLocaleString('en-US');
 }
+
 
 // Run validation on load
 validatePercentages();
