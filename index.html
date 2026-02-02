@@ -32,19 +32,27 @@
     text-align: left; /* Fund Targets header left-justified */
   }
 
-  .inputs {
+    .inputs {
     display: flex;
     flex-direction: column;
-    align-items: center; /* center the input boxes horizontally */
-    margin-bottom: 20px;
-  }
-  .inputs div {
-    margin-bottom: 15px;
-    display: flex;
-    justify-content: center;
+    gap: 10px;
+    }
+
+    .inputs div {
+    display: grid;
+    grid-template-columns: max-content 150px;
+    column-gap: 10px;
     align-items: center;
-  }
-  label { display: inline-block; width: 200px; font-weight: bold; text-align: right; margin-right: 10px; }
+    }
+
+    .inputs label {
+    display: inline-block;
+    width: 300px;      /* fits longest label */
+    font-weight: bold;
+    text-align: right;
+    margin-right: 10px;
+    }
+
 
   /* Bigger fonts for readability */
   input[type="number"], input[type="text"] {
