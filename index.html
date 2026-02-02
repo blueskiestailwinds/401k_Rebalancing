@@ -83,15 +83,44 @@
 
   .errorMessage { color: #ff5555; font-weight: bold; margin-top: 10px; text-align: center; font-size: 1.1rem; }
 
-  table {
-    border-collapse: collapse; 
-    margin: 20px auto; /* center table horizontally */
+  #fundTable {
+    border-collapse: separate;   /* changed */
+    border-spacing: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 20px auto;
     color: #e0e0e0;
-    width: auto; 
+    width: auto;
     min-width: 400px;
   }
-  th, td { border: 1px solid #555; padding: 10px; text-align: center; }
-  th { background: #2196f3; color: white; border-radius: 0; }
+  #fundTable th,
+  #fundTable td {
+    border: 1px solid #555;
+    padding: 10px;
+    text-align: center;
+    border-radius: 0;            /* important */
+  }
+  th {
+    background: #2196f3;
+    color: white;
+  }
+  /* Rounded table corners (only outer cells) */
+  #fundTable thead tr th:first-child {
+    border-top-left-radius: 12px;
+  }
+  
+  #fundTable thead tr th:last-child {
+    border-top-right-radius: 12px;
+  }
+  
+  #fundTable tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 12px;
+  }
+  
+  #fundTable tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 12px;
+  }
+
   tbody tr:nth-child(odd) { background: #2c2c2c; }
   tbody tr:nth-child(even) { background: #1f1f1f; }
   tbody tr:hover { background: #3333aa44; } /* subtle hover highlight */
