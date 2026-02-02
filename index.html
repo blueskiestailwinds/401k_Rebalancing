@@ -114,12 +114,16 @@
   <h2>Portfolio Inputs</h2>
   <div class="inputs">
     <div>
-      <label for="totalPortfolio">Total Portfolio ($):</label>
+      <label for="totalPortfolio">Total Portfolio:</label>
       <input type="text" id="totalPortfolio" value="0" oninput="formatNumber(this)">
     </div>
     <div>
-      <label for="group1Total">Group 1 Total ($):</label>
-      <input type="text" id="group1Total" value="0" oninput="formatNumber(this)">
+      <label for="group1Total">Company Contributions:</label>
+      <input type="text" id="compContrib" value="0" oninput="formatNumber(this)">
+    </div>
+    <div>
+      <label for="group1Total">401(K) Pre-Tax:</label>
+      <input type="text" id="pretax" value="0" oninput="formatNumber(this)">
     </div>
   </div>
 
@@ -208,7 +212,7 @@ function validatePercentages() {
 // Calculate Group 1 percentages and dollars
 function calculateGroup1() {
   const total = parseInput('totalPortfolio');
-  const group1 = parseInput('group1Total');
+  const group1 = parseInput('compContrib') + parseInput('pretax');
   const largePct = parseFloat(document.getElementById('largePct').value) || 0;
   const smallPct = parseFloat(document.getElementById('smallPct').value) || 0;
   const foreignPct = parseFloat(document.getElementById('foreignPct').value) || 0;
